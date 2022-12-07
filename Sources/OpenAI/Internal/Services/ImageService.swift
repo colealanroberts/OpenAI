@@ -25,13 +25,13 @@ final class ImageService: ImageServicing {
     // MARK: - `Private Properties` -
     
     private let decoder: JSONDecoder
-    private var subscriptions: Set<AnyCancellable>
     
     /// MARK: - `Init` -
     
-    init() {
-        self.decoder = .init()
-        self.subscriptions = .init()
+    init(
+        decoder: JSONDecoder
+    ) {
+        self.decoder = decoder
     }
     
     // MARK: - `Public Methods` -

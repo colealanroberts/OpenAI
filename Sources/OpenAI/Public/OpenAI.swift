@@ -26,7 +26,8 @@ public final class OpenAI: OpenAISDK {
     // MARK: - `Init` -
     
     private init() {
-        self.imageService = ImageService()
+        let decoder = JSONDecoder()
+        self.imageService = ImageService(decoder: decoder)
     }
     
     // MARK: - `Public Methods` -
