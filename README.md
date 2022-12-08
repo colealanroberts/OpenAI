@@ -4,11 +4,11 @@ A Swift package for interacting with OpenAI
   - [x] Requesting N images using the [Image Generation API](https://beta.openai.com/docs/guides/images)
   - [ ] Creating an image mask
   
-## Usage
+## Quick Start
 
 **Setup**
 
-To begin using OpenAIKit, add your API key from [OpenAI](https://openai.com/api/).
+To begin using OpenAI, add your API key from [OpenAI](https://openai.com/api/).
 
 ```swift
 OpenAI.shared.connect(with: "your-key")
