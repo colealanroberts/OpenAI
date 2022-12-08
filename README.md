@@ -6,7 +6,7 @@ A Swift package for interacting with OpenAI
   
 ## Quick Start
 
-**Setup**
+**Connect**
 
 To begin using OpenAI, add your API key from [OpenAI](https://openai.com/api/).
 
