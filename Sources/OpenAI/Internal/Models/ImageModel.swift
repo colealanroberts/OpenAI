@@ -17,13 +17,13 @@ public struct ImageModel {
 
 extension ImageModel: Decodable {
     enum CodingKeys: String, CodingKey {
-        case backing = "url"
+        case url
     }
     
     public init(from decoder: Decoder) {
         do {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            let backing = try container.decode(String.self, forKey: .backing)
+            let backing = try container.decode(String.self, forKey: .url)
             self.url = URL(string: backing)!
         } catch {
             fatalError()
