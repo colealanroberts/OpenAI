@@ -4,14 +4,26 @@ import Foundation
 // MARK: - `OpenAISDK` -
 
 public protocol OpenAISDK {
+    /// Connect to OpenAI using your API key, optionally set your organzation which is sent for all requests'
+    /// - Returns: `OpenAISDK` for optional chaining
     func connect(with credentials: OpenAI.Credentials) -> Self
+    
+    /// Asyncronously returns a `Completion` object
+    /// - Parameters:
+    ///     - request: An `OpenAI.CompletionRequest` request, for basic requests you may choose the alternative `completions(model:prompt:)` method
+    /// - Returns: A `Completion` model 
     func completions(for request: OpenAI.CompletionRequest) async throws -> Completion
+    
+    /// Asyncronously returns an array of `Image` objects
+    /// - Parameters:
+    ///     - request: An `OpenAI.ImageRequest` request.
+    /// - Note: `OpenAI.ImageRequest` conforms to `ExpressibleByStringLiteral` which offers additional flexibility when performing this request.
     func images(for request: OpenAI.ImageRequest) async throws -> [Image]
 }
 
 // MARK: - `OpenAI` -
 
-/// ``OpenAI``
+/// `OpenAI`
 ///
 public final class OpenAI: OpenAISDK {
     
@@ -33,6 +45,7 @@ public final class OpenAI: OpenAISDK {
     private init() {
         let decoder = JSONDecoder()
         let encoder = JSONEncoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         encoder.keyEncodingStrategy = .convertToSnakeCase
         self.imageService = ImageService(decoder: decoder, encoder: encoder)
         self.completionService = CompletionService(decoder: decoder, encoder: encoder)

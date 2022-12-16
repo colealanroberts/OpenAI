@@ -15,31 +15,37 @@ public extension OpenAI {
         let prompt: String
         
         /// The number of images to generate. Must be between 1 and 10.
-        let numberOfImages: Int
+        let numberOfImages: Int?
         
         // The size of the generated images. (small: 256x256, normal: 512x512, large: 1024x1024x)
-        let size: Size
+        let size: Size?
         
         /// The format in which the generated images are returned.
-        let response: Response
+        let response: Response?
+        
+        /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. Learn more.
+        let user: String?
         
         public init(
             prompt: String,
-            numberOfImages: Int,
-            size: Size,
-            response: Response
+            numberOfImages: Int? = nil,
+            size: Size? = nil,
+            response: Response? = nil,
+            user: String? = nil
         ) {
             self.prompt = prompt
             self.numberOfImages = numberOfImages
             self.size = size
             self.response = response
+            self.user = user
         }
         
         public init(stringLiteral value: StringLiteralType) {
             self.prompt = value
-            self.numberOfImages = 1
-            self.size = .normal
-            self.response = .url
+            self.numberOfImages = nil
+            self.size = nil
+            self.response = nil
+            self.user = nil
         }
     }
 }
