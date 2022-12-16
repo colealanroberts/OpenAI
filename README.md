@@ -40,7 +40,6 @@ A request can be performed using a simple `String` or by passing in a `OpenAI.Im
 let images = try await OpenAI.shared.images(for: "An astronaut riding a horse in photorealistic style")
 // or
 let images = try await OpenAI.shared.images(for: OpenAI.ImageRequest)
-
 print(images) // images[0].url
 ```
 
