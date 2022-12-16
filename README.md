@@ -29,7 +29,7 @@ let completions = try await openai.completions(for: .init(model: .gpt3(.davinci)
 print(completions)
 ```
 
-A more verbose `CompletionRequest` may provide any of keys found in the [Completions API](https://beta.openai.com/docs/api-reference/completions/create), with the exception of [logit_bias](https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias).
+The latter `CompletionRequest` may provide any of keys found in the [Completions API](https://beta.openai.com/docs/api-reference/completions/create), with the exception of [logit_bias](https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias).
 
 ---
 
