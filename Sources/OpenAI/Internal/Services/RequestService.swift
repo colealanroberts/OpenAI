@@ -24,7 +24,7 @@ class RequestService {
         self.encoder = encoder
     }
     
-    func request<T: Requestable>(for request: T) async throws -> T.Model {
+    func request<T: Requestable>(for request: T) async throws -> T.ResponseModel {
         try await OpenAI.Concrete(request: request).send(decoder, encoder)
     }
 }

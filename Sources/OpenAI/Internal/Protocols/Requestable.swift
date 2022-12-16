@@ -9,8 +9,8 @@ import Foundation
 
 // MARK - `Requestable` -
 
-protocol Requestable<Model>: Encodable {
-    associatedtype Model: Decodable
+protocol Requestable<ResponseModel>: Encodable {
+    associatedtype ResponseModel: Decodable
     
     static var method: APIRequestMethod { get }
     static var path: String { get }

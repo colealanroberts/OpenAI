@@ -36,7 +36,7 @@ final class CompletionService: RequestService, CompletionServicing {
 // MARK: - `OpenAI.CompletionRequest+Requestable` -
 
 extension OpenAI.CompletionRequest: Requestable {
-    typealias Model = Completion
+    typealias ResponseModel = Completion
     static var path: String { "/completions" }
     static var method: APIRequestMethod { .post }
 }

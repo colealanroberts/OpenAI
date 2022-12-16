@@ -19,11 +19,7 @@ final class MockOpenAI: OpenAISDK {
         return DataResponse(created: 0, data: [image])
     }
     
-    func completions(using model: OpenAI.Model, with prompt: String) async throws -> Completion {
-        try await completions(for: .init(model: model, prompt: prompt))
-    }
-    
-    func completions(using model: OpenAI.Model, with prompt: String) async throws -> Completion {
+    func completions(using model: OpenAI.CompletionRequest.Model, with prompt: String) async throws -> Completion {
         try await completions(for: .init(model: model, prompt: prompt))
     }
     

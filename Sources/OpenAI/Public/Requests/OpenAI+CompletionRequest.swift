@@ -12,7 +12,7 @@ import Foundation
 public extension OpenAI {
     struct CompletionRequest {
         /// ID of the model to use. See `Model`
-        let model: OpenAI.Model
+        let model: OpenAI.CompletionRequest.Model
         
         /// The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.
         let prompt: [String]
@@ -74,7 +74,7 @@ public extension OpenAI {
         let user: String?
         
         public init(
-            model: OpenAI.Model,
+            model: OpenAI.CompletionRequest.Model,
             prompt: String...,
             suffix: String? = nil,
             maxTokens: Int? = nil,
@@ -111,7 +111,7 @@ public extension OpenAI {
 
 // MARK: - `OpenAI+CompletionRequest+Model` -
 
-public extension OpenAI {
+public extension OpenAI.CompletionRequest {
     /// See: https://beta.openai.com/docs/models/overviewaa
     enum Model {
         

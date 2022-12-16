@@ -37,7 +37,7 @@ final class ImageService: RequestService, ImageServicing {
 // MARK: - `OpenAI.ImageRequest+Requestable` -
 
 extension OpenAI.ImageRequest: Requestable {
-    typealias Model = DataResponse<[Image]>
+    typealias ResponseModel = DataResponse<[Image]>
     static var path: String { "/images/generations" }
     static var method: APIRequestMethod { .post }
 }
