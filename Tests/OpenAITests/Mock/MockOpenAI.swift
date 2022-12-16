@@ -9,6 +9,7 @@ import Combine
 @testable import OpenAI
 
 final class MockOpenAI: OpenAISDK {
+    
     func connect(with credentials: OpenAI.Credentials) -> Self {
         return self
     }
@@ -16,6 +17,10 @@ final class MockOpenAI: OpenAISDK {
     func images(for request: OpenAI.ImageRequest) async throws -> [Image] {
         let image = Image(url: .init(string: "https://google.com")!)
         return [image]
+    }
+    
+    func completions(using model: OpenAI.Model, with prompt: String) async throws -> Completion {
+        try await completions(for: .init(model: model, prompt: prompt))
     }
     
     func completions(for request: OpenAI.CompletionRequest) async throws -> Completion {
