@@ -20,24 +20,27 @@ final class ImageService: ImageServicing {
     
     // MARK: - `Typealias` -
     
-    typealias Request = OpenAI.ImageRequest.Concrete
+    private typealias Request = OpenAI.ImageRequest.Concrete
     
     // MARK: - `Private Properties` -
     
     private let decoder: JSONDecoder
+    private let encoder: JSONEncoder
     
     /// MARK: - `Init` -
     
     init(
-        decoder: JSONDecoder
+        decoder: JSONDecoder,
+        encoder: JSONEncoder
     ) {
         self.decoder = decoder
+        self.encoder = encoder
     }
     
     // MARK: - `Public Methods` -
     
     func images(for request: OpenAI.ImageRequest) async throws -> [Image] {
-        try await Request(request).send(decoder)
+        try await Request(request: request).send(decoder, encoder).data
     }
 }
 
@@ -48,49 +51,36 @@ extension OpenAI.ImageRequest {
         
         // MARK: - `Type` -
         
-        typealias Response = [Image]
+        typealias Response = DataResponse<[Image]>
+        typealias Request = OpenAI.ImageRequest
         
         // MARK: - `Public Properties` -
         
+        var body: Request? { request }
         var method: APIRequestMethod { .post }
         var path: String { "/images/generations" }
         
-        var headers: [APIRequest.Header]? {
-            guard let credentials = OpenAI.shared.credentials else { return nil }
-            var headers: [Header] = [
-                ("Content-Type", "application/json"),
-                ("Authorization", "Bearer \(credentials.token)")
-            ]
-            
-            if let organization = credentials.organization {
-                headers.append(("OpenAI-Organization", organization))
-            }
-            
-            return headers
-        }
-        
-        var body: [String : Any] {
-            [
-                "prompt": prompt,
-                "n": n,
-                "size": size.toPixel()
-            ]
-        }
-        
-        // MARK: - `Private Properties` -
-        
-        private let prompt: String
-        private let n: Int
-        private let size: OpenAI.ImageRequest.Size
-        
         // MARK: - `Init` -
-        
-        init(
-            _ request: OpenAI.ImageRequest
-        ) {
-            self.prompt = request.prompt
-            self.n = request.numberOfImages
-            self.size = request.size
-        }
+
+        let request: Request
+    }
+}
+
+// MARK: - `OpenAI.ImageRequest+Encodable` -
+
+extension OpenAI.ImageRequest: Encodable {
+    private enum CodingKeys: String, CodingKey {
+        case prompt
+        case n
+        case size
+        case responseFormat
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(prompt, forKey: .prompt)
+        try container.encode(numberOfImages, forKey: .n)
+        try container.encode(size.stringRepresentation, forKey: .size)
+        try container.encode(response.rawValue, forKey: .responseFormat)
     }
 }

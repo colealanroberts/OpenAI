@@ -23,7 +23,9 @@ enum APIRequestError: Error {
 // MARK: - `APIRequest` -
 
 protocol APIRequest {
+    associatedtype Method = APIRequestMethod
     associatedtype Response
+    associatedtype Request: Encodable
     
     typealias Header = (key: String, value: String)
     
@@ -31,14 +33,28 @@ protocol APIRequest {
     var method: APIRequestMethod { get }
     var path: String { get }
     var host: String { get }
-    var body: [String: Any] { get }
+    var body: Request? { get }
     var request: URLRequest { get }
 }
 
 extension APIRequest {
-    var body: [String: Any] { [:] }
+    var body: Encodable? { nil }
     var scheme: String { "https" }
     var host: String { "api.openai.com" }
+    
+    var headers: [Header]? {
+        guard let credentials = OpenAI.shared.credentials else { return nil }
+        var headers: [Header] = [
+            ("Content-Type", "application/json"),
+            ("Authorization", "Bearer \(credentials.token)")
+        ]
+        
+        if let organization = credentials.organization {
+            headers.append(("OpenAI-Organization", organization))
+        }
+        
+        return headers
+    }
 }
 
 extension APIRequest {
@@ -55,14 +71,14 @@ extension APIRequest {
         return URLRequest(url: url)
     }
     
-    fileprivate func materialize() -> URLRequest {
+    fileprivate func materialize(_ encoder: JSONEncoder) -> URLRequest {
         var req = request
         req.httpMethod = method.rawValue
         
         do {
-            req.httpBody = try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted])
+            req.httpBody = try encoder.encode(body)
         } catch {
-            assertionFailure(String(describing: error))
+            fatalError(error.localizedDescription)
         }
         
         if let headers {
@@ -77,16 +93,17 @@ extension APIRequest {
 
 extension APIRequest where Response: Decodable {
     func send(
-        _ decoder: JSONDecoder = .init()
+        _ decoder: JSONDecoder,
+        _ encoder: JSONEncoder
     ) async throws -> Response {
         do {
-            let (data, response) = try await URLSession.shared.data(for: materialize())
+            let (data, response) = try await URLSession.shared.data(for: materialize(encoder))
             guard let response = response as? HTTPURLResponse else { fatalError() }
             guard (200...299).contains(response.statusCode) else {
                 throw APIRequestError.statusCode(response.statusCode)
             }
-            let decoded = try decoder.decode(Request<Response>.self, from: data)
-            return decoded.data
+            let decoded = try decoder.decode(Response.self, from: data)
+            return decoded
         } catch {
             throw error
         }
