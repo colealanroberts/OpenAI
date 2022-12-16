@@ -11,8 +11,14 @@ public protocol OpenAISDK {
     /// Asyncronously returns a `Completion` object
     /// - Parameters:
     ///     - request: An `OpenAI.CompletionRequest` request, for basic requests you may choose the alternative `completions(model:prompt:)` method
-    /// - Returns: A `Completion` model 
+    /// - Returns: A `Completion` model
     func completions(for request: OpenAI.CompletionRequest) async throws -> Completion
+    
+    /// Asyncronously returns a `Completion` object, this is a utility method for the more extensible `completions(for:)` method
+    /// - Parameters:
+    ///     - request: An `OpenAI.CompletionRequest` request
+    /// - Returns: A `Completion` model
+    func completions(using model: OpenAI.Model, with prompt: String) async throws -> Completion
     
     /// Asyncronously returns an array of `Image` objects
     /// - Parameters:
@@ -45,7 +51,6 @@ public final class OpenAI: OpenAISDK {
     private init() {
         let decoder = JSONDecoder()
         let encoder = JSONEncoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         encoder.keyEncodingStrategy = .convertToSnakeCase
         self.imageService = ImageService(decoder: decoder, encoder: encoder)
         self.completionService = CompletionService(decoder: decoder, encoder: encoder)
@@ -62,6 +67,10 @@ public final class OpenAI: OpenAISDK {
     public func images(for request: ImageRequest) async throws -> [Image] {
         preflightCheck()
         return try await imageService.images(for: request)
+    }
+    
+    public func completions(using model: Model, with prompt: String) async throws -> Completion {
+        return try await completions(for: .init(model: model, prompt: prompt))
     }
     
     public func completions(for request: CompletionRequest) async throws -> Completion {
