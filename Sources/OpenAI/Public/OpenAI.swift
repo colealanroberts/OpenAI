@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 
 // MARK: - `OpenAISDK` -
@@ -24,7 +23,7 @@ public protocol OpenAISDK {
     /// - Parameters:
     ///     - request: An `OpenAI.ImageRequest` request.
     /// - Note: `OpenAI.ImageRequest` conforms to `ExpressibleByStringLiteral` which offers additional flexibility when performing this request.
-    func images(for request: OpenAI.ImageRequest) async throws -> [Image]
+    func images(for request: OpenAI.ImageRequest) async throws -> DataResponse<[Image]>
 }
 
 // MARK: - `OpenAI` -
@@ -64,7 +63,7 @@ public final class OpenAI: OpenAISDK {
         return self
     }
     
-    public func images(for request: ImageRequest) async throws -> [Image] {
+    public func images(for request: ImageRequest) async throws -> DataResponse<[Image]> {
         preflightCheck()
         return try await imageService.images(for: request)
     }

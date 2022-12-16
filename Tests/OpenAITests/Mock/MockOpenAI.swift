@@ -14,9 +14,9 @@ final class MockOpenAI: OpenAISDK {
         return self
     }
     
-    func images(for request: OpenAI.ImageRequest) async throws -> [Image] {
+    func images(for request: OpenAI.ImageRequest) async throws -> DataResponse<[Image]> {
         let image = Image(url: .init(string: "https://google.com")!)
-        return [image]
+        return DataResponse(created: 0, data: [image])
     }
     
     func completions(using model: OpenAI.Model, with prompt: String) async throws -> Completion {
