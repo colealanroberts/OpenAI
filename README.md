@@ -18,9 +18,9 @@ OpenAI.shared.connect(with: "your-key")
 
 Request can be performed using a simple `String` or by passing in a `OpenAI.ImageRequest` struct.
 ```swift
-let images = try await OpenAI.shared.request(for: "An astronaut riding a horse in photorealistic style")
+let images = try await OpenAI.shared.images(for: "An astronaut riding a horse in photorealistic style")
 // or
-let images = try await OpenAI.shared.request(for: OpenAI.ImageRequest)
+let images = try await OpenAI.shared.images(for: OpenAI.ImageRequest)
 
 print(images) // images[0].url
 ```
