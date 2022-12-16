@@ -50,13 +50,15 @@ extension OpenAI.ImageRequest: Encodable {
         case n
         case size
         case responseFormat
+        case user
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(prompt, forKey: .prompt)
-        try container.encode(numberOfImages, forKey: .n)
+        try container.encodeIfPresent(numberOfImages, forKey: .n)
         try container.encodeIfPresent(size?.stringRepresentation, forKey: .size)
         try container.encodeIfPresent(response?.rawValue, forKey: .responseFormat)
+        try container.encodeIfPresent(user, forKey: .user)
     }
 }
