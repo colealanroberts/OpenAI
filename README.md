@@ -21,7 +21,7 @@ OpenAI.shared.connect(with: "your-key")
 
 **Requesting Completions**
 
-A request can be performed using either the `completions:using:with:)` method, or, the more verbose `completions(for:)` option.
+A request can be performed using either the `completions:using:with:)` method, or, the more verbose `completions(for:)` option which provides greater flexibility.
 ```swift
 let completions = try await OpenAI.shared.completions(using: .gpt3(.davinci), with: "Say this is a test")
 // or
