@@ -11,7 +11,7 @@ import Foundation
 // MARK: - `ImageServicing` -
 
 protocol ImageServicing {
-    func images(for request: OpenAI.ImageRequest) async throws -> [Image]
+    func images(for request: OpenAI.ImageRequest) async throws -> DataResponse<[Image]>
 }
 
 // MARK: - `ImageService` -
@@ -29,8 +29,8 @@ final class ImageService: RequestService, ImageServicing {
     
     // MARK: - `Public Methods` -
     
-    func images(for request: OpenAI.ImageRequest) async throws -> [Image] {
-        try await super.request(for: request).data
+    func images(for request: OpenAI.ImageRequest) async throws -> DataResponse<[Image]> {
+        try await super.request(for: request)
     }
 }
 

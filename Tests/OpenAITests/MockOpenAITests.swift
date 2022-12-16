@@ -18,7 +18,7 @@ final class MockOpenAITests: XCTestCase {
     func test_makeImageRequest() async {
         do {
             let images = try await openai.images(for: "A mock request")
-            assert(!images.isEmpty)
+            assert(!images.data.isEmpty)
         } catch {
             fatalError(error.localizedDescription)
         }

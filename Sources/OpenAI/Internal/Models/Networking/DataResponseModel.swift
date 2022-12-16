@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - `RequestModel` -
 
-struct DataResponseModel<T: Decodable>: Decodable {
-    let created: Int
-    let data: T
+public struct DataResponseModel<T: Decodable>: Decodable {
+    public let created: Int
+    public let data: T
 }
 
 // MARK: - `Typealias` -
 
-typealias DataResponse = DataResponseModel
+public typealias DataResponse = DataResponseModel
