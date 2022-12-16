@@ -23,9 +23,9 @@ OpenAI.shared.connect(with: "your-key")
 
 A request can be performed using either the `completions:using:with:)` method, or, the more verbose `completions(for:)` option.
 ```swift
-let completions = try await openai.completions(using: .gpt3(.davinci), with: "Say this is a test")
+let completions = try await OpenAI.shared.completions(using: .gpt3(.davinci), with: "Say this is a test")
 // or
-let completions = try await openai.completions(for: .init(model: .gpt3(.davinci), prompt: "Say this is a test"))
+let completions = try await OpenAI.shared.completions(for: .init(model: .gpt3(.davinci), prompt: "Say this is a test"))
 print(completions)
 ```
 
