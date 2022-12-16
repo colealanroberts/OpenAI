@@ -1,8 +1,9 @@
 # OpenAI
 
 A Swift package for interacting with OpenAI
+  - [x] Request N completions using the [Completions API](https://beta.openai.com/docs/api-reference/completions/create)
   - [x] Requesting N images using the [Image Generation API](https://beta.openai.com/docs/guides/images)
-  - [ ] Creating an image mask
+    - [ ] Creating an image mask
   
 ## Quick Start
 
@@ -14,9 +15,23 @@ To begin using OpenAI, add your API key from [OpenAI](https://openai.com/api/).
 OpenAI.shared.connect(with: "your-key")
 ```
 
-**Request Images**
+**Requesting Completions**
 
-Request can be performed using a simple `String` or by passing in a `OpenAI.ImageRequest` struct.
+A request can be performed using the utility method
+```swift
+let completions = try await openai.completions(using: .gpt3(.davinci), with: "Say this is a test")
+// or
+let completions = try await openai.completions(for: .init(model: .gpt3(.davinci), prompt: "Say this is a test"))
+print(completions)
+```
+
+A more verbose `CompletionRequest` may provide any of keys found in the [Completions API](https://beta.openai.com/docs/api-reference/completions/create).
+
+---
+
+**Requesting Images**
+
+A request can be performed using a simple `String` or by passing in a `OpenAI.ImageRequest` struct.
 ```swift
 let images = try await OpenAI.shared.images(for: "An astronaut riding a horse in photorealistic style")
 // or
@@ -25,7 +40,7 @@ let images = try await OpenAI.shared.images(for: OpenAI.ImageRequest)
 print(images) // images[0].url
 ```
 
-A more verbose request may provide the following—
+A more verbose `ImageRequest` may provide the following—
 ```swift
 struct ImageRequest: ExpressibleByStringLiteral {
     /// A text description of the desired image(s). The maximum length is 1000 characters.
