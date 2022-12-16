@@ -25,7 +25,7 @@ final class MockOpenAITests: XCTestCase {
     func test_makeCompletionRequest() async {
         do {
             let completions = try await openai.completions(for: .init(model: .gpt3(.davinci), prompt: "Say this is a test"))
-            dump(completions)
+            assert(completions.created == 0)
         } catch {
             fatalError(error.localizedDescription)
         }

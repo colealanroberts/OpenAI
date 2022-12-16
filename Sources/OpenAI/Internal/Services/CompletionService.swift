@@ -15,54 +15,30 @@ protocol CompletionServicing {
 
 // MARK: - `CompletionService` -
 
-final class CompletionService: CompletionServicing {
-    
-    // MARK: - `Typealias` -
-    
-    private typealias Request = OpenAI.CompletionRequest.Concrete
-    
-    // MARK: - `Private Properties` -
-    
-    private let decoder: JSONDecoder
-    private let encoder: JSONEncoder
+final class CompletionService: RequestService, CompletionServicing {
     
     // MARK: - `Init` -
     
-    init(
+    override init(
         decoder: JSONDecoder,
         encoder: JSONEncoder
     ) {
-        self.decoder = decoder
-        self.encoder = encoder
+        super.init(decoder: decoder, encoder: encoder)
     }
     
     // MARK: - `Public Methods` -
     
     func completions(for request: OpenAI.CompletionRequest) async throws -> Completion {
-        try await Request(request: request).send(decoder, encoder)
+        try await super.request(for: request)
     }
 }
 
-// MARK - `OpenAI.ImageRequest+CompletionRequest` -
+// MARK: - `OpenAI.CompletionRequest+Requestable` -
 
-extension OpenAI.CompletionRequest {
-    struct Concrete: APIRequest {
-        
-        // MARKL - `Type` -
-        
-        typealias Response = Completion
-        typealias Request = OpenAI.CompletionRequest
-        
-        // MARK: - `Public Properties` -
-
-        var body: Request? { request }
-        var method: APIRequestMethod { .post }
-        var path: String { "/completions" }
-        
-        // MARK: - `Init` -
-        
-        let request: Request
-    }
+extension OpenAI.CompletionRequest: Requestable {
+    typealias Model = Completion
+    static var path: String { "/completions" }
+    static var method: APIRequestMethod { .post }
 }
 
 // MARK: - `OpenAI.CompletionRequest+Encodable` -

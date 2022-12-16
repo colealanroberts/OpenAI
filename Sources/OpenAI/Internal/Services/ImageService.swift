@@ -16,54 +16,30 @@ protocol ImageServicing {
 
 // MARK: - `ImageService` -
 
-final class ImageService: ImageServicing {
-    
-    // MARK: - `Typealias` -
-    
-    private typealias Request = OpenAI.ImageRequest.Concrete
-    
-    // MARK: - `Private Properties` -
-    
-    private let decoder: JSONDecoder
-    private let encoder: JSONEncoder
+final class ImageService: RequestService, ImageServicing {
     
     /// MARK: - `Init` -
     
-    init(
+    override init(
         decoder: JSONDecoder,
         encoder: JSONEncoder
     ) {
-        self.decoder = decoder
-        self.encoder = encoder
+        super.init(decoder: decoder, encoder: encoder)
     }
     
     // MARK: - `Public Methods` -
     
     func images(for request: OpenAI.ImageRequest) async throws -> [Image] {
-        try await Request(request: request).send(decoder, encoder).data
+        try await super.request(for: request).data
     }
 }
 
-// MARK - `OpenAI.ImageRequest+APIRequest` -
+// MARK: - `OpenAI.ImageRequest+Requestable` -
 
-extension OpenAI.ImageRequest {
-    struct Concrete: APIRequest {
-        
-        // MARK: - `Type` -
-        
-        typealias Response = DataResponse<[Image]>
-        typealias Request = OpenAI.ImageRequest
-        
-        // MARK: - `Public Properties` -
-        
-        var body: Request? { request }
-        var method: APIRequestMethod { .post }
-        var path: String { "/images/generations" }
-        
-        // MARK: - `Init` -
-
-        let request: Request
-    }
+extension OpenAI.ImageRequest: Requestable {
+    typealias Model = DataResponse<[Image]>
+    static var path: String { "/images/generations" }
+    static var method: APIRequestMethod { .post }
 }
 
 // MARK: - `OpenAI.ImageRequest+Encodable` -
@@ -80,7 +56,7 @@ extension OpenAI.ImageRequest: Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(prompt, forKey: .prompt)
         try container.encode(numberOfImages, forKey: .n)
-        try container.encode(size.stringRepresentation, forKey: .size)
-        try container.encode(response.rawValue, forKey: .responseFormat)
+        try container.encodeIfPresent(size?.stringRepresentation, forKey: .size)
+        try container.encodeIfPresent(response?.rawValue, forKey: .responseFormat)
     }
 }

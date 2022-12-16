@@ -39,18 +39,18 @@ protocol APIRequest {
 
 extension APIRequest {
     var body: Encodable? { nil }
-    var scheme: String { "https" }
-    var host: String { "api.openai.com" }
+    var scheme: String { Constants.API.scheme  }
+    var host: String { Constants.API.baseURL }
     
     var headers: [Header]? {
         guard let credentials = OpenAI.shared.credentials else { return nil }
         var headers: [Header] = [
-            ("Content-Type", "application/json"),
-            ("Authorization", "Bearer \(credentials.token)")
+            Constants.API.Headers.contentType,
+            Constants.API.Headers.token(credentials.token)
         ]
         
         if let organization = credentials.organization {
-            headers.append(("OpenAI-Organization", organization))
+            headers.append(Constants.API.Headers.organization(organization))
         }
         
         return headers
@@ -62,7 +62,7 @@ extension APIRequest {
         var components = URLComponents()
         components.scheme = scheme
         components.host = host
-        components.path = "/v1" + path
+        components.path = Constants.API.versionPath + path
         
         guard let url = components.url else {
             fatalError("The supplied url \(String(describing: components.url)) was malformed!")
