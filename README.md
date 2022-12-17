@@ -9,7 +9,7 @@ A Swift package for interacting with OpenAI
 
 **Connecting**
 
-Import `OpenAI` and then add your API key from [OpenAI](https://openai.com/api/).
+Import `OpenAI` and then add your API key from [OpenAI](https://openai.com/api/). The API can be initialized directly or accessed using the static `shared` property.
 
 ```swift
 import OpenAI
@@ -17,11 +17,13 @@ import OpenAI
 ...
 
 OpenAI.shared.connect(with: "your-key")
+// or
+let openai = OpenAI(credentials: "your-key")
 ```
 
 **Requesting Completions**
 
-A request can be performed using the `completions(for:)` method. By default a `OpenAI.CompletionRequest` supplies `nil` values for many of the parameters, though these can be supplied for increased flexibility.
+A `OpenAI.CompletionRequest` supplies `nil` values for many of the parameters, though these can be supplied for increased flexibility.
 ```swift
 let completions = try await OpenAI.shared.completions(for: OpenAI.CompletionRequest)
 print(completions)
@@ -33,15 +35,13 @@ The latter `CompletionRequest` may provide any of keys found in the [Completions
 
 **Requesting Images**
 
-A request can be performed using a simple `String` or by passing in a `OpenAI.ImageRequest` struct.
+A request can be performed by passing in a `OpenAI.ImageRequest` struct.
 ```swift
-let images = try await OpenAI.shared.images(for: "An astronaut riding a horse in photorealistic style")
-// or
 let images = try await OpenAI.shared.images(for: OpenAI.ImageRequest)
 print(images) // images[0].url
 ```
 
-A more verbose `ImageRequest` may provide the following—
+An `ImageRequest` may provide the following—
 ```swift
 struct ImageRequest: ExpressibleByStringLiteral {
     /// A text description of the desired image(s). The maximum length is 1000 characters.
