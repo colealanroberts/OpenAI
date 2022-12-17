@@ -1,37 +1,11 @@
 //
-//  CompletionService.swift
+//  OpenAI.CompletionRequest+Requestable.swift
 //  
 //
-//  Created by Cole Roberts on 12/15/22.
+//  Created by Cole Roberts on 12/16/22.
 //
 
 import Foundation
-
-// MARK: - `CompletionServicing` -
-
-protocol CompletionServicing {
-    func completions(for request: OpenAI.CompletionRequest) async throws -> Completion
-}
-
-// MARK: - `CompletionService` -
-
-final class CompletionService: RequestService, CompletionServicing {
-    
-    // MARK: - `Init` -
-    
-    override init(
-        decoder: JSONDecoder,
-        encoder: JSONEncoder
-    ) {
-        super.init(decoder: decoder, encoder: encoder)
-    }
-    
-    // MARK: - `Public Methods` -
-    
-    func completions(for request: OpenAI.CompletionRequest) async throws -> Completion {
-        try await super.request(for: request)
-    }
-}
 
 // MARK: - `OpenAI.CompletionRequest+Requestable` -
 
@@ -39,11 +13,7 @@ extension OpenAI.CompletionRequest: Requestable {
     typealias ResponseModel = Completion
     static var path: String { "/completions" }
     static var method: APIRequestMethod { .post }
-}
-
-// MARK: - `OpenAI.CompletionRequest+Encodable` -
-
-extension OpenAI.CompletionRequest: Encodable {
+    
     private enum CodingKeys: String, CodingKey {
         case model
         case prompt

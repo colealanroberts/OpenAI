@@ -42,17 +42,16 @@ public final class OpenAI: OpenAISDK {
     
     // MARK: - `Private Properties` -
     
-    private let imageService: ImageServicing
-    private let completionService: CompletionServicing
+    private let decoder: JSONDecoder
+    private let encoder: JSONEncoder
     
     // MARK: - `Init` -
     
     private init() {
-        let decoder = JSONDecoder()
+        self.decoder = JSONDecoder()
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
-        self.imageService = ImageService(decoder: decoder, encoder: encoder)
-        self.completionService = CompletionService(decoder: decoder, encoder: encoder)
+        self.encoder = encoder
     }
     
     // MARK: - `Public Methods` -
@@ -63,18 +62,16 @@ public final class OpenAI: OpenAISDK {
         return self
     }
     
-    public func images(for request: ImageRequest) async throws -> DataResponse<[Image]> {
-        preflightCheck()
-        return try await imageService.images(for: request)
+    public func images(for model: ImageRequest) async throws -> DataResponse<[Image]> {
+        return try await request(for: model)
     }
     
     public func completions(using model: OpenAI.CompletionRequest.Model, with prompt: String) async throws -> Completion {
-        return try await completions(for: .init(model: model, prompt: prompt))
+        return try await request(for: CompletionRequest(model: model, prompt: prompt))
     }
     
-    public func completions(for request: CompletionRequest) async throws -> Completion {
-        preflightCheck()
-        return try await completionService.completions(for: request)
+    public func completions(for model: CompletionRequest) async throws -> Completion {
+        return try await request(for: model)
     }
     
     // MARK: - `Private Methods` -
@@ -83,5 +80,10 @@ public final class OpenAI: OpenAISDK {
         guard let credentials = credentials, !credentials.isEmpty else {
             preconditionFailure("You must supply `Credentials` before performing a request!")
         }
+    }
+    
+    private func request<T: Requestable, U: Decodable>(for request: T) async throws -> U {
+        preflightCheck()
+        return try await OpenAI.ConcreteRequest<T, U>(request: request).send(decoder, encoder)
     }
 }

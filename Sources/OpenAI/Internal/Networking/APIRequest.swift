@@ -81,10 +81,8 @@ extension APIRequest {
             fatalError(error.localizedDescription)
         }
         
-        if let headers {
-            headers.forEach {
-                req.addValue($0.value, forHTTPHeaderField: $0.key)
-            }
+        headers?.forEach {
+            req.addValue($0.value, forHTTPHeaderField: $0.key)
         }
         
         return req

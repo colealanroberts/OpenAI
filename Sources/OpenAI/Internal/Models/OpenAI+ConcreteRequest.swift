@@ -1,5 +1,5 @@
 //
-//  OpenAI+Concrete.swift
+//  OpenAI+ConcreteRequest.swift
 //  
 //
 //  Created by Cole Roberts on 12/15/22.
@@ -10,9 +10,9 @@ import Foundation
 // MARK: - `OpenAI+Concrete` -
 
 extension OpenAI {
-    struct Concrete<T: Requestable, U>: APIRequest {
-        typealias Response = U
+    struct ConcreteRequest<T: Requestable, U>: APIRequest {
         typealias Request = T
+        typealias Response = U
         
         // MARK: - `Public Properties` -
 
