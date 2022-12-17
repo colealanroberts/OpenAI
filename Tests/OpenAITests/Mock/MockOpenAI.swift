@@ -14,12 +14,12 @@ final class MockOpenAI: OpenAISDK {
         return self
     }
     
-    func images(for request: OpenAI.ImageRequest) async throws -> DataResponse<[Image]> {
+    func images(for request: OpenAI.ImageRequest) async throws -> DataResponseModel<[ImageModel]> {
         return DataResponse(created: 0, data: [Image(url: "https://google.com")])
     }
     
-    func completions(for request: OpenAI.CompletionRequest) async throws -> Completion {
-        let completion = Completion(id: "", object: "", created: 0, choices: [])
+    func completions(for request: OpenAI.CompletionRequest) async throws -> CompletionModel {
+        let completion = CompletionModel(id: "", object: "", created: 0, choices: [])
         return completion
     }
 }
