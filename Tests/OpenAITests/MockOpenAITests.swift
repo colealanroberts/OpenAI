@@ -23,18 +23,7 @@ final class MockOpenAITests: XCTestCase {
             fatalError(error.localizedDescription)
         }
     }
-    
-    // MARK: - Completions (Basic)
-    
-    func test_makeBasicCompletionRequest() async {
-        do {
-            let completions = try await openai.completions(using: .gpt3(.davinci), with: "Say this is a test")
-            assert(completions.created == 0)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-    }
-    
+
     // MARK: - Completions (Complex)
     
     func test_makeComplexCompletionRequest() async {

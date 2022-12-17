@@ -13,12 +13,6 @@ public protocol OpenAISDK {
     /// - Returns: A `OpenAI.CompletionRequest` model
     func completions(for request: OpenAI.CompletionRequest) async throws -> Completion
     
-    /// Asyncronously returns a `Completion` object, this is a utility method for the more extensible `completions(for:)` method
-    /// - Parameters:
-    ///     - request: An `OpenAI.CompletionRequest.Model`
-    /// - Returns: A `Completion` model
-    func completions(using model: OpenAI.CompletionRequest.Model, with prompt: String) async throws -> Completion
-    
     /// Asyncronously returns an array of `Image` objects
     /// - Parameters:
     ///     - request: An `OpenAI.ImageRequest` request.
@@ -66,10 +60,6 @@ public final class OpenAI: OpenAISDK {
     
     public func completions(for model: CompletionRequest) async throws -> Completion {
         return try await request(for: model)
-    }
-    
-    public func completions(using model: OpenAI.CompletionRequest.Model, with prompt: String) async throws -> Completion {
-        return try await completions(for: .init(model: model, prompt: prompt))
     }
     
     public func images(for model: ImageRequest) async throws -> DataResponse<[Image]> {
