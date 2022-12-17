@@ -12,7 +12,3 @@ import Foundation
 public struct ImageModel: Decodable {
     public let url: String
 }
-
-// MARK: - `Typealias` -
-
-public typealias Image = ImageModel

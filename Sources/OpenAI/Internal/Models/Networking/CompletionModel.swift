@@ -24,7 +24,3 @@ public extension CompletionModel {
         let index: Int
     }
 }
-
-// MARK: - `Typealias` -
-
-public typealias Completion = CompletionModel

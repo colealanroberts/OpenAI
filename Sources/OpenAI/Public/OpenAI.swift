@@ -11,13 +11,13 @@ public protocol OpenAISDK {
     /// - Parameters:
     ///     - request: An `OpenAI.CompletionRequest` request, for basic requests you may choose the alternative `completions(model:prompt:)` method
     /// - Returns: A `OpenAI.CompletionRequest` model
-    func completions(for request: OpenAI.CompletionRequest) async throws -> Completion
+    func completions(for request: OpenAI.CompletionRequest) async throws -> CompletionModel
     
     /// Asyncronously returns an array of `Image` objects
     /// - Parameters:
     ///     - request: An `OpenAI.ImageRequest` request.
     /// - Note: `OpenAI.ImageRequest` conforms to `ExpressibleByStringLiteral` which offers additional flexibility when performing this request.
-    func images(for request: OpenAI.ImageRequest) async throws -> DataResponse<[Image]>
+    func images(for request: OpenAI.ImageRequest) async throws -> DataResponseModel<[ImageModel]>
 }
 
 // MARK: - `OpenAI` -
@@ -43,7 +43,12 @@ public final class OpenAI: OpenAISDK {
     
     // MARK: - `Init` -
     
-    init() {
+    public convenience init(credentials: Credentials) {
+        self.init()
+        self.connect(with: credentials)
+    }
+    
+    public init() {
         self.decoder = JSONDecoder()
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -58,11 +63,11 @@ public final class OpenAI: OpenAISDK {
         return self
     }
     
-    public func completions(for model: CompletionRequest) async throws -> Completion {
+    public func completions(for model: CompletionRequest) async throws -> CompletionModel {
         return try await request(for: model)
     }
     
-    public func images(for model: ImageRequest) async throws -> DataResponse<[Image]> {
+    public func images(for model: ImageRequest) async throws -> DataResponseModel<[ImageModel]> {
         return try await request(for: model)
     }
     

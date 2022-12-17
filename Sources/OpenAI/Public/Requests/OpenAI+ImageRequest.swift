@@ -10,7 +10,7 @@ import Foundation
 // MARK: - `OpenAI+ImageRequest` -
 
 public extension OpenAI {
-    struct ImageRequest: ExpressibleByStringLiteral {
+    struct ImageRequest {
         /// A text description of the desired image(s). The maximum length is 1000 characters.
         let prompt: String
         
@@ -38,14 +38,6 @@ public extension OpenAI {
             self.size = size
             self.response = response
             self.user = user
-        }
-        
-        public init(stringLiteral value: StringLiteralType) {
-            self.prompt = value
-            self.numberOfImages = nil
-            self.size = nil
-            self.response = nil
-            self.user = nil
         }
     }
 }

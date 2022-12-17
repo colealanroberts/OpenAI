@@ -10,7 +10,7 @@ import Foundation
 // MARK: - `OpenAI.CompletionRequest+Requestable` -
 
 extension OpenAI.CompletionRequest: Requestable {
-    typealias ResponseModel = Completion
+    typealias ResponseModel = CompletionModel
     static var path: String { "/completions" }
     static var method: APIRequestMethod { .post }
     

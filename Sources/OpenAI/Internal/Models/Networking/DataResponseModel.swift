@@ -13,7 +13,3 @@ public struct DataResponseModel<T: Decodable>: Decodable {
     public let created: Int
     public let data: T
 }
-
-// MARK: - `Typealias` -
-
-public typealias DataResponse = DataResponseModel
