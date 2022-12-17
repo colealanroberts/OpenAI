@@ -20,8 +20,9 @@ enum Constants {
                 (key: "Authorization", value: "Bearer \(token)")
             }
             
-            static func organization(_ org: String) -> (key: String, value: String) {
-                (key: "OpenAI-Organization", value: org)
+            static func organization(_ org: String?) -> (key: String, value: String)? {
+                guard let org else { return nil }
+                return (key: "OpenAI-Organization", value: org)
             }
         }
     }

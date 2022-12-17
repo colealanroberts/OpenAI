@@ -22,6 +22,7 @@ extension OpenAI {
         
         // MARK: - `Init` -
         
+        let credentials: OpenAI.Credentials
         let request: Request
     }
 }

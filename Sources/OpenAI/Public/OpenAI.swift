@@ -30,6 +30,8 @@ public protocol OpenAISDK {
 
 /// `OpenAI`
 ///
+/// Instances of this class may be initialized directly, alternatively a
+/// singleton instance may be accessed using `OpenAI.shared`.
 public final class OpenAI: OpenAISDK {
     
     // MARK: - `Static Properties` -
@@ -47,7 +49,7 @@ public final class OpenAI: OpenAISDK {
     
     // MARK: - `Init` -
     
-    private init() {
+    init() {
         self.decoder = JSONDecoder()
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -76,14 +78,18 @@ public final class OpenAI: OpenAISDK {
     
     // MARK: - `Private Methods` -
     
-    private func preflightCheck() {
+    private func preflightCheck() -> Credentials {
         guard let credentials = credentials, !credentials.isEmpty else {
             preconditionFailure("You must supply `Credentials` before performing a request!")
         }
+        
+        return credentials
     }
     
     private func request<T: Requestable, U: Decodable>(for request: T) async throws -> U {
-        preflightCheck()
-        return try await OpenAI.ConcreteRequest<T, U>(request: request).send(decoder, encoder)
+        return try await OpenAI.ConcreteRequest<T, U>(
+            credentials: preflightCheck(),
+            request: request
+        ).send(decoder, encoder)
     }
 }

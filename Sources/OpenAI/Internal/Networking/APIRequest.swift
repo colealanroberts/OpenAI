@@ -28,12 +28,13 @@ protocol APIRequest {
     
     typealias Header = (key: String, value: String)
     
-    var headers: [Header]? { get }
+    var headers: [Header] { get }
     var method: APIRequestMethod { get }
     var path: String { get }
     var host: String { get }
     var body: Request? { get }
     var request: URLRequest { get }
+    var credentials: OpenAI.Credentials { get }
 }
 
 extension APIRequest {
@@ -41,18 +42,12 @@ extension APIRequest {
     var scheme: String { Constants.API.scheme  }
     var host: String { Constants.API.baseURL }
     
-    var headers: [Header]? {
-        guard let credentials = OpenAI.shared.credentials else { return nil }
-        var headers: [Header] = [
+    var headers: [Header] {
+        [
             Constants.API.Headers.contentType,
-            Constants.API.Headers.token(credentials.token)
-        ]
-        
-        if let organization = credentials.organization {
-            headers.append(Constants.API.Headers.organization(organization))
-        }
-        
-        return headers
+            Constants.API.Headers.token(credentials.token),
+            Constants.API.Headers.organization(credentials.organization)
+        ].compactMap { $0 }
     }
 }
 
@@ -64,7 +59,7 @@ extension APIRequest {
         components.path = Constants.API.versionPath + path
         
         guard let url = components.url else {
-            fatalError("The supplied url \(String(describing: components.url)) was malformed!")
+            preconditionFailure("The supplied url \(String(describing: components.url)) was malformed!")
         }
         
         return URLRequest(url: url)
@@ -77,10 +72,10 @@ extension APIRequest {
         do {
             req.httpBody = try encoder.encode(body)
         } catch {
-            fatalError(error.localizedDescription)
+            assertionFailure(error.localizedDescription)
         }
         
-        headers?.forEach {
+        headers.forEach {
             req.addValue($0.value, forHTTPHeaderField: $0.key)
         }
         
