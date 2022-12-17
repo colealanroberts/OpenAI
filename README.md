@@ -9,7 +9,7 @@ A Swift package for interacting with OpenAI
 
 **Connecting**
 
-Import `OpenAI` and then add your API key from [OpenAI](https://openai.com/api/).
+Import `OpenAI` and then add your API key from [OpenAI](https://openai.com/api/). The API can be initialized directly or accessed using the static `shared` property.
 
 ```swift
 import OpenAI
@@ -17,6 +17,8 @@ import OpenAI
 ...
 
 OpenAI.shared.connect(with: "your-key")
+// or
+let openai = OpenAI(credentials: "your-key")
 ```
 
 **Requesting Completions**
