@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - `RequestModel` -
+// MARK: - `DataResponseModel` -
 
 public struct DataResponseModel<T: Decodable>: Decodable {
     public let created: Int

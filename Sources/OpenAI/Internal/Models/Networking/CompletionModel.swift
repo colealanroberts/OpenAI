@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - `CompletionModel` -
 
-public struct CompletionModel {
+public struct CompletionModel: Decodable {
     let id: String
     let object: String
     let created: Int
@@ -19,16 +19,11 @@ public struct CompletionModel {
 // MARK: - `CompletionModel+Choice`
 
 public extension CompletionModel {
-    struct Choice {
+    struct Choice: Decodable {
         let text: String
         let index: Int
     }
 }
-
-// MARK: - `CompletionModel+Decodable` -
-
-extension CompletionModel: Decodable {}
-extension CompletionModel.Choice: Decodable {}
 
 // MARK: - `Typealias` -
 
