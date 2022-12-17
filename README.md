@@ -33,15 +33,13 @@ The latter `CompletionRequest` may provide any of keys found in the [Completions
 
 **Requesting Images**
 
-A request can be performed using a simple `String` or by passing in a `OpenAI.ImageRequest` struct.
+A request can be performed by passing in a `OpenAI.ImageRequest` struct.
 ```swift
-let images = try await OpenAI.shared.images(for: "An astronaut riding a horse in photorealistic style")
-// or
 let images = try await OpenAI.shared.images(for: OpenAI.ImageRequest)
 print(images) // images[0].url
 ```
 
-A more verbose `ImageRequest` may provide the following—
+An `ImageRequest` may provide the following—
 ```swift
 struct ImageRequest: ExpressibleByStringLiteral {
     /// A text description of the desired image(s). The maximum length is 1000 characters.
