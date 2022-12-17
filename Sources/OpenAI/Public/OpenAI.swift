@@ -62,15 +62,15 @@ public final class OpenAI: OpenAISDK {
         return self
     }
     
-    public func images(for model: ImageRequest) async throws -> DataResponse<[Image]> {
+    public func completions(for model: CompletionRequest) async throws -> Completion {
         return try await request(for: model)
     }
     
     public func completions(using model: OpenAI.CompletionRequest.Model, with prompt: String) async throws -> Completion {
-        return try await request(for: CompletionRequest(model: model, prompt: prompt))
+        return try await completions(for: .init(model: model, prompt: prompt))
     }
     
-    public func completions(for model: CompletionRequest) async throws -> Completion {
+    public func images(for model: ImageRequest) async throws -> DataResponse<[Image]> {
         return try await request(for: model)
     }
     

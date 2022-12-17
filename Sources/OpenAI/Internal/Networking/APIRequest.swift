@@ -23,7 +23,6 @@ enum APIRequestError: Error {
 // MARK: - `APIRequest` -
 
 protocol APIRequest {
-    associatedtype Method = APIRequestMethod
     associatedtype Response
     associatedtype Request: Encodable
     
