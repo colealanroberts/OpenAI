@@ -10,17 +10,17 @@ import Foundation
 // MARK: - `CompletionModel` -
 
 public struct CompletionModel: Decodable {
-    let id: String
-    let object: String
-    let created: Int
-    let choices: [Choice]
+    public let id: String
+    public let object: String
+    public let created: Int
+    public let choices: [Choice]
 }
 
 // MARK: - `CompletionModel+Choice`
 
 public extension CompletionModel {
     struct Choice: Decodable {
-        let text: String
-        let index: Int
+        public let text: String
+        public let index: Int
     }
 }
