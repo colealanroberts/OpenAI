@@ -55,12 +55,6 @@ struct ImageRequest: ExpressibleByStringLiteral {
 }
 ```
 
-## Authentication
-
-> **Warning**
->
-> Remember that your API key is a secret! Do not share it with others or expose it in any client-side code (browsers, apps). Production requests must be > routed through your own backend server where your API key can be securely loaded from an environment variable or key management service.  - [Source](https://beta.openai.com/docs/api-reference/authentication)
-
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
