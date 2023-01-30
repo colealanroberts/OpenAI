@@ -16,8 +16,43 @@ enum APIRequestMethod: String {
 
 // MARK: - `APIRequestError` -
 
-enum APIRequestError: Error {
+public enum APIRequestError: Error, LocalizedError {
+    
     case statusCode(Int)
+    case openAIError(OpenAIError)
+    
+    public var localizedDescription: String {
+        switch self {
+        case .openAIError(let msg):
+            print(msg.message)
+            return msg.message
+        case .statusCode(let code):
+            return "Status code: \(code)"
+        }
+    }
+    
+    public var errorDescription: String? { return localizedDescription }
+}
+
+struct OpenAIErrorWrapper: Error, Codable {
+    /// The error object itself.
+    let error: OpenAIError
+}
+
+// MARK: - `OpenAIErrorMessage` -
+
+public struct OpenAIError: Error, Codable {
+    /// The message associated with the error.
+    public let message: String
+
+    /// The type of error the object is.
+    public let type: String
+
+    /// The parameters of the error.
+    public let param: String?
+
+    /// The code associated with the error.
+    public let code: String?
 }
 
 // MARK: - `APIRequest` -
@@ -88,16 +123,17 @@ extension APIRequest where Response: Decodable {
         _ decoder: JSONDecoder,
         _ encoder: JSONEncoder
     ) async throws -> Response {
-        do {
-            let (data, response) = try await URLSession.shared.data(for: materialize(encoder))
-            guard let response = response as? HTTPURLResponse else { fatalError() }
-            guard (200...299).contains(response.statusCode) else {
+        let (data, response) = try await URLSession.shared.data(for: materialize(encoder))
+        guard let response = response as? HTTPURLResponse else { fatalError() }
+        guard (200...299).contains(response.statusCode) else {
+            if let message = try? decoder.decode(OpenAIErrorWrapper.self, from: data) {
+                throw APIRequestError.openAIError(message.error)
+            } else {
                 throw APIRequestError.statusCode(response.statusCode)
             }
-            let decoded = try decoder.decode(Response.self, from: data)
-            return decoded
-        } catch {
-            throw error
         }
+        let decoded = try decoder.decode(Response.self, from: data)
+        return decoded
     }
 }
+
