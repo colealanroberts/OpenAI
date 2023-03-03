@@ -128,15 +128,15 @@ public extension OpenAI.ChatRequest {
         
         // MARK: - `Utility` -
         
-        static func assistant(content: String) -> Self {
+        static func assistant(_ content: String) -> Self {
             .init(role: .assistant, content: content)
         }
         
-        static func system(content: String) -> Self {
+        static func system(_ content: String) -> Self {
             .init(role: .system, content: content)
         }
         
-        static func user(content: String) -> Self {
+        static func user(_ content: String) -> Self {
             .init(role: .user, content: content)
         }
     }

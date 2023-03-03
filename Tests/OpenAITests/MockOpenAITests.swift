@@ -21,10 +21,10 @@ final class MockOpenAITests: XCTestCase {
                 for: .init(
                     model: .gpt3(.turbo),
                     messages: [
-                        .system(content: "You are a helpful assistant."),
-                        .user(content: "Who won the world series in 2020?"),
-                        .assistant(content: "The Los Angeles Dodgers won the World Series in 2020."),
-                        .user(content: "Where was it played?")
+                        .system("You are a helpful assistant."),
+                        .user("Who won the world series in 2020?"),
+                        .assistant("The Los Angeles Dodgers won the World Series in 2020."),
+                        .user("Where was it played?")
                     ]
                 )
             )
@@ -53,9 +53,7 @@ final class MockOpenAITests: XCTestCase {
     
     func test_imageRequest() async {
         do {
-            let images = try await openai.images(
-                for: .init(prompt: "A white siamese cat")
-            )
+            let images = try await openai.images(for: "A white siamese cat")
             assert(!images.data.isEmpty)
         } catch {
             fatalError(error.localizedDescription)

@@ -42,6 +42,14 @@ public extension OpenAI {
     }
 }
 
+// MARK: - `OpenAI.ImageRequest+ExpressibleByStringLiteral` -
+
+extension OpenAI.ImageRequest: ExpressibleByStringLiteral {
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(prompt: value)
+    }
+}
+
 // MARK: - `OpenAI.ImageRequest+Size
 
 public extension OpenAI.ImageRequest {
