@@ -7,17 +7,24 @@ public protocol OpenAISDK {
     /// - Returns: `OpenAISDK` for optional chaining
     func connect(with credentials: OpenAI.Credentials) -> Self
     
-    /// Asyncronously returns a `Completion` object
+    /// Asyncronously returns an array of `ChatModel` objects.
+    /// - Parameters:
+    ///     - request: An `OpenAI.ChatRequest` request.
+    /// - Returns: A `OpenAI.ChatModel` model.
+    func chats(for model: OpenAI.ChatRequest) async throws -> ChatModel
+    
+    /// Asyncronously returns a `Completion` object.
     /// - Parameters:
     ///     - request: An `OpenAI.CompletionRequest` request, for basic requests you may choose the alternative `completions(model:prompt:)` method
-    /// - Returns: A `OpenAI.CompletionRequest` model
-    func completions(for request: OpenAI.CompletionRequest) async throws -> CompletionModel
+    /// - Returns: A `OpenAI.CompletionRequest` model.
+    func completions(for model: OpenAI.CompletionRequest) async throws -> CompletionModel
     
-    /// Asyncronously returns an array of `Image` objects
+    /// Asyncronously returns an array of `ImageModel` objects.
     /// - Parameters:
     ///     - request: An `OpenAI.ImageRequest` request.
+    /// - Returns: A `Images` model.
     /// - Note: `OpenAI.ImageRequest` conforms to `ExpressibleByStringLiteral` which offers additional flexibility when performing this request.
-    func images(for request: OpenAI.ImageRequest) async throws -> DataResponseModel<[ImageModel]>
+    func images(for model: OpenAI.ImageRequest) async throws -> ImagesModel
 }
 
 // MARK: - `OpenAI` -
@@ -49,9 +56,11 @@ public final class OpenAI: OpenAISDK {
     }
     
     public init() {
-        self.decoder = JSONDecoder()
+        let decoder = JSONDecoder()
         let encoder = JSONEncoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         encoder.keyEncodingStrategy = .convertToSnakeCase
+        self.decoder = decoder
         self.encoder = encoder
     }
     
@@ -63,11 +72,15 @@ public final class OpenAI: OpenAISDK {
         return self
     }
     
+    public func chats(for model: ChatRequest) async throws -> ChatModel {
+        return try await request(for: model)
+    }
+    
     public func completions(for model: CompletionRequest) async throws -> CompletionModel {
         return try await request(for: model)
     }
     
-    public func images(for model: ImageRequest) async throws -> DataResponseModel<[ImageModel]> {
+    public func images(for model: ImageRequest) async throws -> ImagesModel {
         return try await request(for: model)
     }
     
@@ -85,6 +98,7 @@ public final class OpenAI: OpenAISDK {
         return try await OpenAI.ConcreteRequest<T, U>(
             credentials: preflightCheck(),
             request: request
-        ).send(decoder, encoder)
+        )
+        .send(decoder, encoder)
     }
 }

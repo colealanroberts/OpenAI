@@ -109,12 +109,11 @@ public extension OpenAI {
     }
 }
 
-// MARK: - `OpenAI+CompletionRequest+Model` -
+// MARK: - `OpenAI.CompletionRequest+Model` -
 
 public extension OpenAI.CompletionRequest {
-    /// See: https://beta.openai.com/docs/models/overviewaa
+    /// See: https://beta.openai.com/docs/models/overview
     enum Model {
-        
         /// See `GPT3`
         case gpt3(GPT3)
         
