@@ -10,15 +10,13 @@ import Foundation
 // MARK: - `OpenAI+Concrete` -
 
 extension OpenAI {
-    struct ConcreteRequest<T: Requestable, U>: APIRequest {
-        typealias Request = T
-        typealias Response = U
+    struct ConcreteRequest<Request: Requestable, Response>: APIRequest {
         
         // MARK: - `Public Properties` -
 
         var body: Request? { request }
-        var method: APIRequestMethod { T.method }
-        var path: String { T.path }
+        var method: APIRequestMethod { Request.method }
+        var path: String { Request.path }
         
         // MARK: - `Init` -
         

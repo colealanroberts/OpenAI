@@ -94,8 +94,8 @@ public final class OpenAI: OpenAISDK {
         return credentials
     }
     
-    private func request<T: Requestable, U: Decodable>(for request: T) async throws -> U {
-        return try await OpenAI.ConcreteRequest<T, U>(
+    private func request<Request: Requestable, Response: Decodable>(for request: Request) async throws -> Response {
+        return try await OpenAI.ConcreteRequest<Request, Response>(
             credentials: preflightCheck(),
             request: request
         )
