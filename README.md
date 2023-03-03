@@ -1,59 +1,67 @@
 # OpenAI
 
 A Swift package for interacting with OpenAI
+  - [x] Utilizing ChatGPT using the [ChatGPT API](https://platform.openai.com/docs/api-reference/chat/create)
   - [x] Request N completions using the [Completions API](https://beta.openai.com/docs/api-reference/completions/create)
   - [x] Requesting N images using the [Image Generation API](https://beta.openai.com/docs/guides/images)
     - [ ] Creating an image mask
   
 ## Quick Start
 
-**Connecting**
+### Authentication
 
 Import `OpenAI` and then add your API key from [OpenAI](https://openai.com/api/). The API can be initialized directly or accessed using the static `shared` property.
 
 ```swift
 import OpenAI
 
-...
-
 OpenAI.shared.connect(with: "your-key")
 // or
 let openai = OpenAI(credentials: "your-key")
 ```
+### Chats
 
-**Requesting Completions**
+An example using several of the available roles (`assistant`, `system` and `user`) with content.
 
-A `OpenAI.CompletionRequest` supplies `nil` values for many of the parameters, though these can be supplied for increased flexibility.
 ```swift
-let completions = try await OpenAI.shared.completions(for: OpenAI.CompletionRequest)
+let chats = try await openai.chats(
+    for: .init(
+        model: .gpt3(.turbo),
+        messages: [
+            .system(content: "You are a helpful assistant."),
+            .user(content: "Who won the world series in 2020?"),
+            .assistant(content: "The Los Angeles Dodgers won the World Series in 2020."),
+            .user(content: "Where was it played?")
+        ]
+    )
+)
+print(chats)
+```
+> This request supplies `nil` values by default for many of the available parameters, may can be supplied for added flexibility.
+
+### Completions
+
+A simple request where the prompt is echoed back.
+
+```swift
+let completions = try await openai.completions(
+    for: .init(
+        model: .gpt3(.davinci),
+        prompt: "Say this is a test"
+    )
+)
 print(completions)
 ```
+> This request supplies nil values by default for many of the available parameters, which can be supplied for added flexibility.
 
-The latter `CompletionRequest` may provide any of keys found in the [Completions API](https://beta.openai.com/docs/api-reference/completions/create), with the exception of [logit_bias](https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias).
+### Images
 
----
-
-**Requesting Images**
-
-A request can be performed by passing in a `OpenAI.ImageRequest` struct.
+A simple request for creating an image of a cat.
 ```swift
-let images = try await OpenAI.shared.images(for: OpenAI.ImageRequest)
+let images = try await openai.images(for: "A white siamese cat")
 print(images) // images[0].url
 ```
-
-An `ImageRequest` may provide the following—
-```swift
-struct ImageRequest: ExpressibleByStringLiteral {
-    /// A text description of the desired image(s). The maximum length is 1000 characters.
-    let prompt: String
-    /// The number of images to generate. Must be between 1 and 10.
-    let numberOfImages: Int
-    // The size of the generated images. (`small`: 256x256, `normal`: 512x512, `large`: 1024x1024x)
-    let size: Size
-    /// The format in which the generated images are returned. (`json` or `b64JSON`)
-    let response: Response 
-}
-```
+> This request supplies nil values by default for many of the available parameters, which can be supplied for added flexibility.
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
