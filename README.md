@@ -28,10 +28,10 @@ let chats = try await openai.chats(
     for: .init(
         model: .gpt3(.turbo),
         messages: [
-            .system(content: "You are a helpful assistant."),
-            .user(content: "Who won the world series in 2020?"),
-            .assistant(content: "The Los Angeles Dodgers won the World Series in 2020."),
-            .user(content: "Where was it played?")
+            .system("You are a helpful assistant."),
+            .user("Who won the world series in 2020?"),
+            .assistant("The Los Angeles Dodgers won the World Series in 2020."),
+            .user("Where was it played?")
         ]
     )
 )
