@@ -10,7 +10,7 @@ import Foundation
 // MARK: - `OpenAI.ImageRequest+Requestable` -
 
 extension OpenAI.ImageRequest: Requestable {
-    typealias ResponseModel = DataResponseModel<[ImageModel]>
+    typealias ResponseModel = ImagesModel
     static var path: String { "/images/generations" }
     static var method: APIRequestMethod { .post }
     

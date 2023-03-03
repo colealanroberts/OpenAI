@@ -17,7 +17,7 @@ public extension OpenAI {
         /// The number of images to generate. Must be between 1 and 10.
         let numberOfImages: Int?
         
-        // The size of the generated images. (small: 256x256, normal: 512x512, large: 1024x1024x)
+        /// The size of the generated images. (small: 256x256, normal: 512x512, large: 1024x1024x)
         let size: Size?
         
         /// The format in which the generated images are returned.
