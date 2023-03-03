@@ -37,7 +37,7 @@ let chats = try await openai.chats(
 )
 print(chats)
 ```
-This request supplies nil values by default for many of the available parameters, which can be supplied for added flexibility.
+> This request supplies nil values by default for many of the available parameters, which can be supplied for added flexibility.
 
 ### Completions
 
