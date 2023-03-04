@@ -10,20 +10,20 @@ import Foundation
 // MARK: - `ChatModel` -
 
 public struct ChatModel: Decodable {
-    let id: String
-    let object: String
-    let created: Int
-    let choices: [Choice]
-    let usage: UsageModel
+    public let id: String
+    public let object: String
+    public let created: Int
+    public let choices: [Choice]
+    public let usage: UsageModel
 }
 
 // MARK: - `ChatModel+Choice` -
 
 public extension ChatModel {
     struct Choice: Decodable {
-        let index: Int
-        let message: Message
-        let finishReason: String
+        public let index: Int
+        public let message: Message
+        public let finishReason: String
     }
 }
 
@@ -31,7 +31,7 @@ public extension ChatModel {
 
 public extension ChatModel.Choice {
     struct Message: Decodable {
-        let role: String
-        let content: String
+        public let role: String
+        public let content: String
     }
 }

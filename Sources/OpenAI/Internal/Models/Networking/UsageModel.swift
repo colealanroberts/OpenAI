@@ -9,8 +9,8 @@ import Foundation
 
 // MARK: - `UsageModel` -
 
-struct UsageModel: Decodable {
-    let promptTokens: Int
-    let completionTokens: Int
-    let totalTokens: Int
+public struct UsageModel: Decodable {
+    public let promptTokens: Int
+    public let completionTokens: Int
+    public let totalTokens: Int
 }

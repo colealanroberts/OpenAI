@@ -10,11 +10,11 @@ import Foundation
 // MARK: - `CompletionModel` -
 
 public struct CompletionModel: Decodable {
-    let id: String
-    let object: String
-    let created: Int
-    let choices: [Choice]
-    let usage: UsageModel
+    public let id: String
+    public let object: String
+    public let created: Int
+    public let choices: [Choice]
+    public let usage: UsageModel
 }
 
 // MARK: - `CompletionModel+Choice`
