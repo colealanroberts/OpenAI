@@ -126,17 +126,27 @@ public extension OpenAI.ChatRequest {
         let role: Role
         let content: String
         
+        // MARK: - `Init` -
+        
+        public init(
+            role: Role,
+            content: String
+        ) {
+            self.role = role
+            self.content = content
+        }
+        
         // MARK: - `Utility` -
         
-        static func assistant(_ content: String) -> Self {
+        public static func assistant(_ content: String) -> Self {
             .init(role: .assistant, content: content)
         }
         
-        static func system(_ content: String) -> Self {
+        public static func system(_ content: String) -> Self {
             .init(role: .system, content: content)
         }
         
-        static func user(_ content: String) -> Self {
+        public static func user(_ content: String) -> Self {
             .init(role: .user, content: content)
         }
     }
