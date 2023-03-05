@@ -23,7 +23,7 @@ public extension ChatModel {
     struct Choice: Decodable {
         public let index: Int
         public let message: Message
-        public let finishReason: String
+        public let finishReason: String?
     }
 }
 
