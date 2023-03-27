@@ -7,19 +7,19 @@ public protocol OpenAISDK {
     /// - Returns: `OpenAISDK` for optional chaining
     func connect(with credentials: OpenAI.Credentials) -> Self
     
-    /// Asyncronously returns an array of `ChatModel` objects.
+    /// Asyncronously returns a `ChatModel` object
     /// - Parameters:
     ///     - request: An `OpenAI.ChatRequest` request.
     /// - Returns: A `OpenAI.ChatModel` model.
     func chats(for model: OpenAI.ChatRequest) async throws -> ChatModel
     
-    /// Asyncronously returns a `Completion` object.
+    /// Asyncronously returns a `Completion` object
     /// - Parameters:
     ///     - request: An `OpenAI.CompletionRequest` request, for basic requests you may choose the alternative `completions(model:prompt:)` method
     /// - Returns: A `OpenAI.CompletionRequest` model.
     func completions(for model: OpenAI.CompletionRequest) async throws -> CompletionModel
     
-    /// Asyncronously returns an array of `ImageModel` objects.
+    /// Asyncronously returns a `ImageModel` object
     /// - Parameters:
     ///     - request: An `OpenAI.ImageRequest` request.
     /// - Returns: A `Images` model.
