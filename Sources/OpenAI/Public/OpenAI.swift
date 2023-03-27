@@ -3,7 +3,7 @@ import Foundation
 // MARK: - `OpenAISDK` -
 
 public protocol OpenAISDK {
-    /// Connect to OpenAI using your API key, optionally set your organzation which is sent for all requests'
+    /// Connect to OpenAI using your API key, optionally set your organzation which is sent for all requests
     /// - Returns: `OpenAISDK` for optional chaining
     func connect(with credentials: OpenAI.Credentials) -> Self
     
